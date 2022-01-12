@@ -63,8 +63,11 @@ def get_point_max(points):
 
 #gives the average wave_length of photons that are not absorbed
 #this wave_length can probably be mapped to the color of the particles
-def get_average_wave_length(points, area_not_absorbed):
-    return area_not_absorbed / points[-1][0]
+def get_average_absorbtion(points, area_not_absorbed):
+    return area_not_absorbed / (points[-1][0] - points[0][0])
+
+def get_average_wave_length(points, area):
+    return points[0][0] + area
 
 def main():
     assert len(sys.argv) == 2, f'The programm takes one argument, a file to read points from. {len(sys.argv)} arguments where given'
@@ -72,20 +75,27 @@ def main():
         points = read_points(file)
 
     #the area_under_curve of test points is 4
-    #test_points = [[0, 0], [2, 2], [4, 0]]
+    #points = [[0, 0], [2, 2], [4, 0]]
 
     precision = 10000
     area_under_curve = get_area_under_curve(points, precision)    
     print(f'\narea_under_curve: {area_under_curve}\n')
 
-    area_not_absorbed = get_area_not_absorbed(points, area_under_curve)
-    print(f'\narea not absorbed: {area_not_absorbed}\n')
+    average_absorbtion = get_average_absorbtion(points, area_under_curve)
+    print(f'\navergae absorbtion: {average_absorbtion}\n')
 
     point_max = get_point_max(points)
     print(f'\nx of maximum: {point_max[0]}, y of maximum: {point_max[1]}\n')
 
-    average_wave_length = get_average_wave_length(points, area_not_absorbed)
-    print(f'\naverage wave length of not absorbed photons: {average_wave_length}\n')
+    average_wave_length_under_curve = get_average_wave_length(points, area_under_curve)
+    print(f'\naverage wave length under curve: {average_wave_length_under_curve}\n')
+
+    area_not_absorbed = get_area_not_absorbed(points, area_under_curve)
+    print(f'\narea not absorbed: {area_not_absorbed}\n')
+
+    #this is probably the color
+    average_wave_length_above_curve = get_average_wave_length(points, area_not_absorbed)
+    print(f'\naverage wave length above curve: {average_wave_length_above_curve}\n')
 
 if __name__ == "__main__":
     main()
