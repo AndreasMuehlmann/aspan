@@ -13,7 +13,7 @@ Quickstart:
         - x and y koordinates are separated by a comma
         - x is first y is second
         - when entering floating pont numbers use a dot (example: 2.5)
-        - the first point has to have the x value 380 and the last x value has to be 750
+        - the first point has to have the x value 380 and the last x value has to be 780
         - the absorption (the y) has to be measured from 0 to 2.5
             (
                 If yours is measured diffenrently use the convert.py.

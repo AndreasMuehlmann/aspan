@@ -4,6 +4,7 @@ import pygame
 
 pygame.init()
 
+#TODO: learn how md file works to make readme better
 #TODO: get rid of convert.py anstatt let the max y be given in the first line of the textfile
 #TODO: see if the blackness works
 
@@ -29,7 +30,7 @@ def read_points(file):
         points.append([float(point[0]), float(original)])
 
     points.sort(key=lambda point: point[0])
-    assert 375 <= points[0][0] <= 385 and 745 <= points[-1][0] <= 755, 'The first x should be around 380 (+-5) and the last x should be around 755 (+-5).'
+    assert 375 <= points[0][0] <= 385 and 775 <= points[-1][0] <= 785, 'The first x should be around 380 (+-5) and the last x should be around 755 (+-5).'
     return points
 
 def calc_slope(point1, point2):
