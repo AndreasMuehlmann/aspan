@@ -26,7 +26,7 @@ def read_points(file):
 
 def write_points(points, faktor, file):
     for point in points:
-        file.write(f'{point[0]}, {point[1] * faktor}\n')
+        file.write(f'{point[0]}, {round(point[1] * faktor, 4)}\n')
 
 def main():
 
@@ -38,7 +38,7 @@ def main():
 
 
     with open(f'{filename[ : -4]}faktor25.txt', 'w') as new_file:
-        write_points(points, 2.5, new_file)
+        write_points(points, 2.5 / 0.9, new_file)
 
 if __name__ == '__main__':
     main()
