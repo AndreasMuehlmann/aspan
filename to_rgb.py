@@ -1,4 +1,4 @@
-def wavelength_to_rgb(wavelength, gamma=0.8):
+def wavelength_to_rgb(wavelength, intensity=1.0, gamma=0.8):
 
     '''This converts a given wavelength of light to an 
     approximate RGB color value. The wavelength must be given
@@ -40,7 +40,7 @@ def wavelength_to_rgb(wavelength, gamma=0.8):
         R = 0.0
         G = 0.0
         B = 0.0
-    R *= 255
-    G *= 255
-    B *= 255
+    R *= 255 * intensity
+    G *= 255 * intensity
+    B *= 255 * intensity
     return (int(R), int(G), int(B))

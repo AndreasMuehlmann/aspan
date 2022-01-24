@@ -1,5 +1,5 @@
 import sys
-from wavelength_to_rgb import wavelength_to_rgb
+from to_rgb import wavelength_to_rgb
 import pygame
 
 pygame.init()
@@ -85,8 +85,8 @@ def get_average_absorbtion(points, area_not_absorbed):
 def get_average_wave_length(points, area_left, area_right):
     return (points[0][0] + points[-1][0]) / 2 - (area_left / 2.5) + (area_right / 2.5)
 
-def get_blackness(points, area_under_curve):
-    return area_under_curve / get_total_area(points)
+def get_share(points, area):
+    return area / get_total_area(points)
 
 def main():
     assert len(sys.argv) == 2, f'The programm takes one argument, a file to read points from. {len(sys.argv)} arguments where given'
@@ -114,8 +114,8 @@ def main():
     average_wave_length_above_curve = get_average_wave_length(points, area_left_above_curve, area_right_above_curve)
     print(f'\naverage wave length above curve: {average_wave_length_above_curve}')
 
-    blackness = get_blackness(points, area_under_curve)
-    print(f'\nblackness: {blackness}')
+    intensity = 1 - get_share(points, area_above_curve)
+    print(f'\nintensity: {intensity}')
 
 #   average_absorbtion = get_average_absorbtion(points, area_under_curve)
 #   print(f'\navergae absorbtion: {average_absorbtion}\n')
@@ -123,7 +123,7 @@ def main():
 #   point_max = get_point_max(points)
 #   print(f'\nx of maximum: {point_max[0]}, y of maximum: {point_max[1]}\n')
         
-    visible_color = wavelength_to_rgb(average_wave_length_above_curve, 1 - blackness) #the blackness might be the gamma (, 1 - blackness)
+    visible_color = wavelength_to_rgb(average_wave_length_above_curve, intensity) #the blackness might be the gamma (, 1 - blackness)
 
     window = pygame.display.set_mode((500, 500))
     pygame.display.set_caption('VISIBLE COLOR')
