@@ -1,3 +1,4 @@
+import time
 import sys
 from to_rgb import wavelength_to_rgb
 import pygame
@@ -98,23 +99,23 @@ def main():
 
     precision = 10000
 
-    area_left, area_right = get_area_under_curve(points, precision)    
-    area_under_curve = area_left + area_right
+    area_left_under_curve, area_right_under_curve = get_area_under_curve(points, precision)    
+    area_under_curve = area_left_under_curve + area_right_under_curve
     print(f'\narea under curve: {area_under_curve}')
 
-    area_left_above_curve = (get_total_area(points) / 2) - area_left
-    area_right_above_curve = (get_total_area(points) / 2) - area_right
+    area_left_above_curve = (get_total_area(points) / 2) - area_left_under_curve
+    area_right_above_curve = (get_total_area(points) / 2) - area_right_under_curve
 
     area_above_curve = area_left_above_curve + area_right_above_curve
     print(f'\narea above curve: {area_above_curve}')
 
-    average_wave_length_above_curve = get_average_wave_length(points, area_left, area_right)
-    print(f'\naverage wave length above curve: {average_wave_length_above_curve}')
+    average_wave_length_under_curve = get_average_wave_length(points, area_left_under_curve, area_right_under_curve)
+    print(f'\naverage wave length above curve: {average_wave_length_under_curve}')
 
     average_wave_length_above_curve = get_average_wave_length(points, area_left_above_curve, area_right_above_curve)
     print(f'\naverage wave length above curve: {average_wave_length_above_curve}')
 
-    intensity = 1 - get_share(points, area_above_curve)
+    intensity = get_share(points, area_above_curve)
     print(f'\nintensity: {intensity}')
 
 #   average_absorbtion = get_average_absorbtion(points, area_under_curve)
@@ -122,8 +123,8 @@ def main():
 #
 #   point_max = get_point_max(points)
 #   print(f'\nx of maximum: {point_max[0]}, y of maximum: {point_max[1]}\n')
-        
-    visible_color = wavelength_to_rgb(average_wave_length_above_curve, intensity) #the blackness might be the gamma (, 1 - blackness)
+
+    visible_color = wavelength_to_rgb(average_wave_length_above_curve, intensity)
 
     window = pygame.display.set_mode((500, 500))
     pygame.display.set_caption('VISIBLE COLOR')

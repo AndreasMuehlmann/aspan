@@ -1,4 +1,4 @@
-def wavelength_to_rgb(wavelength, intensity=1.0, gamma=0.8):
+def wavelength_to_rgb(wavelength, intensity=1.0, saturation=1.0, gamma=0.8):
 
     '''This converts a given wavelength of light to an 
     approximate RGB color value. The wavelength must be given
@@ -40,7 +40,23 @@ def wavelength_to_rgb(wavelength, intensity=1.0, gamma=0.8):
         R = 0.0
         G = 0.0
         B = 0.0
+
     R *= 255 * intensity
     G *= 255 * intensity
     B *= 255 * intensity
+
+    R, G, B = _saturate(int(R), int(G), int(B), saturation)
+
     return (int(R), int(G), int(B))
+
+def _saturate(R, G, B, saturation):
+    RGB = {'R' : R, 'G' : G, 'B' : B}
+    max_val = max(RGB.values())
+
+    for key, val in RGB.items():
+        if val == max_val:
+            continue
+
+        RGB[key] += (max_val - val) * (1 - saturation)
+
+    return round(RGB['R']), round(RGB['G']), round(RGB['B'])
