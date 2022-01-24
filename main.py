@@ -1,4 +1,3 @@
-import time
 import sys
 from to_rgb import wavelength_to_rgb
 import pygame
@@ -66,28 +65,37 @@ def get_area_under_curve(points, precision):
 
         x += 1 / precision
 
-    return area_left, area_right
+    return round(area_left, 2), round(area_right, 2)
 
 def get_total_area(points):
-    return (points[-1][0] - points[0][0]) * 2.5
+    return round((points[-1][0] - points[0][0]) * 2.5, 2)
 
-def get_point_max(points):
-    point_max_absorbtion = [0, 0]
+def get_point_max_min(points):
+    point_max_absorbtion = points[0]
+    point_min_absorbtion = points[0]
+
     for point in points:
         if point[1] > point_max_absorbtion[1]:
             point_max_absorbtion = point
-    return point_max_absorbtion
+
+        if point[1] < point_min_absorbtion[1]:
+            point_min_absorbtion = point
+
+    return point_max_absorbtion, point_min_absorbtion
 
 #gives the average wave_length of photons that are not absorbed
 #this wave_length can probably be mapped to the color of the particles
 def get_average_absorbtion(points, area_not_absorbed):
-    return area_not_absorbed / (points[-1][0] - points[0][0])
+    return round(area_not_absorbed / (points[-1][0] - points[0][0]), 2)
 
 def get_average_wave_length(points, area_left, area_right):
-    return (points[0][0] + points[-1][0]) / 2 - (area_left / 2.5) + (area_right / 2.5)
+    return round((points[0][0] + points[-1][0]) / 2 - (area_left / 2.5) + (area_right / 2.5), 2)
 
 def get_share(points, area):
-    return area / get_total_area(points)
+    return round(area / get_total_area(points), 2)
+
+def get_saturation(y_max, y_min):
+    return round((y_max - y_min) / 2.5, 2)
 
 def main():
     assert len(sys.argv) == 2, f'The programm takes one argument, a file to read points from. {len(sys.argv)} arguments where given'
@@ -103,8 +111,8 @@ def main():
     area_under_curve = area_left_under_curve + area_right_under_curve
     print(f'\narea under curve: {area_under_curve}')
 
-    area_left_above_curve = (get_total_area(points) / 2) - area_left_under_curve
-    area_right_above_curve = (get_total_area(points) / 2) - area_right_under_curve
+    area_left_above_curve = round((get_total_area(points) / 2) - area_left_under_curve, 2)
+    area_right_above_curve = round((get_total_area(points) / 2) - area_right_under_curve, 2)
 
     area_above_curve = area_left_above_curve + area_right_above_curve
     print(f'\narea above curve: {area_above_curve}')
@@ -118,13 +126,19 @@ def main():
     intensity = get_share(points, area_above_curve)
     print(f'\nintensity: {intensity}')
 
+    point_max, point_min = get_point_max_min(points)
+    print(f'\nx of maximum: {point_max[0]}, y of maximum: {point_max[1]}')
+    print(f'x of minimum: {point_min[0]}, y of minimum: {point_min[1]}\n')
+
+
+    saturation = get_saturation(point_max[1], point_min[1])
+    print(f'\nsaturation: {saturation}')
+
 #   average_absorbtion = get_average_absorbtion(points, area_under_curve)
 #   print(f'\navergae absorbtion: {average_absorbtion}\n')
 #
-#   point_max = get_point_max(points)
-#   print(f'\nx of maximum: {point_max[0]}, y of maximum: {point_max[1]}\n')
 
-    visible_color = wavelength_to_rgb(average_wave_length_above_curve, intensity)
+    visible_color = wavelength_to_rgb(average_wave_length_above_curve, intensity, saturation)
 
     window = pygame.display.set_mode((500, 500))
     pygame.display.set_caption('VISIBLE COLOR')
