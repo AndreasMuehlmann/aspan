@@ -1,3 +1,4 @@
+import math
 import sys
 from to_rgb import wavelength_to_rgb
 import pygame
@@ -5,8 +6,6 @@ import pygame
 pygame.init()
 
 #TODO: learn how md file works to make readme better
-#TODO: get rid of convert.py anstatt let the max y be given in the first line of the textfile
-#TODO: see if the blackness works
 
 def read_points(file):
     points = []
@@ -21,8 +20,8 @@ def read_points(file):
             continue
 
         point = line.strip().split(',')
-        assert len(point) == 2, f'A point has to be separated by a comma and contains only two numbers.\
-            There can only be one point per line. (line: {line_number + 1})'
+        assert len(point) == 2, f'A point has to be separated by a comma and contains only two numbers.'\
+            + f' There can only be one point per line. (line: {line_number + 1})'
 
         point[0] = point[0].replace(' ', '')
         point[1] = point[1].replace(' ', '')
@@ -103,6 +102,9 @@ def get_average_wave_length(points, area_left, area_right, upper_limit_y_axis):
 def get_share(points, area, upper_limit_y_axis):
     return round(area / get_total_area(points, upper_limit_y_axis), 2)
 
+def get_intensity(points, area_above_curve, upper_limit_y_axis):
+    return round(math.sqrt(get_share(points, area_above_curve, upper_limit_y_axis)), 2)
+
 def get_saturation(y_max, y_min, upper_limit_y_axis):
     return round((y_max - y_min) / upper_limit_y_axis, 2)
 
@@ -132,7 +134,7 @@ def main():
     average_wave_length_above_curve = get_average_wave_length(points, area_left_above_curve, area_right_above_curve, upper_limit_y_axis)
     print(f'\naverage wave length above curve: {average_wave_length_above_curve}')
 
-    intensity = get_share(points, area_above_curve, upper_limit_y_axis)
+    intensity = get_intensity(points, area_above_curve, upper_limit_y_axis)
     print(f'\nintensity: {intensity}')
 
     point_max, point_min = get_point_max_min(points)
