@@ -2,7 +2,7 @@
 
 creator: Andreas Mühlmann 
 License: MIT 
-Github: https://github.com/AndreasMuehlmann/cospa
+Github: https://github.com/AndreasMuehlmann/aspan
 
 wavelength_to_RGB: http://www.noah.org/wiki/Wavelength_to_RGB_in_Python
 
