@@ -5,8 +5,6 @@ import pygame
 
 pygame.init()
 
-#TODO: learn how md file works to make readme better
-
 def read_points(file):
     points = []
     for line_number, line in enumerate(file):
@@ -91,11 +89,6 @@ def get_point_max_min(points):
 
     return point_max_absorbtion, point_min_absorbtion
 
-#gives the average wave_length of photons that are not absorbed
-#this wave_length can probably be mapped to the color of the particles
-def get_average_absorbtion(points, area_not_absorbed):
-    return round(area_not_absorbed / (points[-1][0] - points[0][0]), 2)
-
 def get_average_wave_length(points, area_left, area_right, upper_limit_y_axis):
     return round((points[0][0] + points[-1][0]) / 2 - (area_left / upper_limit_y_axis) + (area_right / upper_limit_y_axis), 2)
 
@@ -113,9 +106,6 @@ def main():
     with open(sys.argv[1]) as file:
         points, upper_limit_y_axis = read_points(file)
 
-    #the area_under_curve of test points is 4
-    #points = [[0, 0], [2, 2], [4, 0]]
-
     precision = 10000
 
     area_left_under_curve, area_right_under_curve = get_area_under_curve(points, precision)    
@@ -125,11 +115,11 @@ def main():
     area_left_above_curve = round((get_total_area(points, upper_limit_y_axis) / 2) - area_left_under_curve, 2)
     area_right_above_curve = round((get_total_area(points, upper_limit_y_axis) / 2) - area_right_under_curve, 2)
 
-    area_above_curve = area_left_above_curve + area_right_above_curve
+    area_above_curve = round(area_left_above_curve + area_right_above_curve, 2)
     print(f'\narea above curve: {area_above_curve}')
 
     average_wave_length_under_curve = get_average_wave_length(points, area_left_under_curve, area_right_under_curve, upper_limit_y_axis)
-    print(f'\naverage wave length above curve: {average_wave_length_under_curve}')
+    print(f'\naverage wave length under curve: {average_wave_length_under_curve}')
 
     average_wave_length_above_curve = get_average_wave_length(points, area_left_above_curve, area_right_above_curve, upper_limit_y_axis)
     print(f'\naverage wave length above curve: {average_wave_length_above_curve}')
@@ -145,13 +135,10 @@ def main():
     saturation = get_saturation(point_max[1], point_min[1], upper_limit_y_axis)
     print(f'\nsaturation: {saturation}')
 
-#   average_absorbtion = get_average_absorbtion(points, area_under_curve)
-#   print(f'\navergae absorbtion: {average_absorbtion}\n')
-
-    visible_color = wavelength_to_rgb(average_wave_length_above_curve, intensity, saturation)
+    visible_color = wavelength_to_rgb(average_wave_length_above_curve, intensity, 1)
 
     window = pygame.display.set_mode((500, 500))
-    pygame.display.set_caption('VISIBLE COLOR')
+    pygame.display.set_caption(f'{sys.argv[1]}')
     window.fill(visible_color)
     pygame.display.flip()
     while True:

@@ -18,12 +18,6 @@ Quickstart:
             - x is first y is second
             - when entering floating pont numbers use a dot (example: 2.5)
             - the first point has to have the x value 380 and the last x value has to be 780
-            - the absorption (the y) has to be measured from 0 to 2.5
-                (
-                    If yours is measured diffenrently use the convert.py.
-                    For that enter "python convert.py [filename] (of the spectrum) [faktor] (to multiply your y so its from 0 to 2.5)"
-                    (you have to be in the directory of the  convert.py and the spectrum)
-                )
 
             it should look like this:
             faktor
@@ -34,7 +28,7 @@ Quickstart:
             x5, y5
             x6, y6
 
-            example
+            example:
             2.5
             380.0, 1.0556
             420.0, 1.9167
@@ -45,7 +39,6 @@ Quickstart:
             780.0, 0.2778
 
     after finishing:
-
     Run the programm by typing:
-    "python (a python interpreter has to be installed) main.py [filename] (the one you just created)"
-    into a terminal (you have to be in the directory of the main.py and the spectrum)
+    ".\aspan [filename] (the one you just created)"
+    into a terminal (you have to be in the directory of the executable and the spectrum)
